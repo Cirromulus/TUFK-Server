@@ -1,0 +1,8 @@
+<Files ~ "\.py$">
+Order allow,deny
+Deny from all
+</Files>
+<Files ~ "settings.php">
+Order allow,deny
+Deny from all
+</Files>
