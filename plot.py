@@ -30,11 +30,13 @@ axT.xaxis.set_minor_locator(dates.HourLocator(interval=5))   # every 4 hours
 axT.xaxis.set_minor_formatter(dates.DateFormatter('%H:%M'))  # hours and minutes
 axT.xaxis.set_major_locator(dates.DayLocator(interval=1))    # every day
 axT.xaxis.set_major_formatter(dates.DateFormatter('\n%d.%m.%Y')) 
+axT.set_xlim(left=timestamp[0])
 axT.grid(which='major')
 
 
 fig.legend()
-fig.set_size_inches(13, 6)
+fig.set_size_inches(14, 6)
+plt.subplots_adjust(left=0.05, right=0.95, top=0.86, bottom=0.1)
 fig.savefig('temp.png', dpi=70)
 
 print("OK")
