@@ -1,6 +1,10 @@
 <?php
+include_once("settings.php");
+$result = $conn->query("SELECT * FROM config LIMIT 1;"); 
+$config = mysqli_fetch_assoc($result);
 
 echo '<?xml version="1.0" encoding="UTF-8"?>
-<Config targetTemperature="16" targetHumidity="65" samplingPeriodSeconds="10" serverConnectionPeriodSeconds="1750" serverURI="http://wiewarmistesbei.exsilencio.de/"/>';
+<Config targetTemperature="'.$config["targetTemperature"].'" targetHumidity="'.$config["targetHumidity"].'" samplingPeriodSeconds="'.$config["samplingPeriodSeconds"].'" serverConnectionPeriodSeconds="'.$config["serverConnectionPeriodSeconds"].'" serverURI="http://wiewarmistesbei.exsilencio.de/"/>';
 
+$conn->close();
 ?>
