@@ -77,7 +77,7 @@ axH.scatter(heater[0], heater[1], label='Heater', color='y', marker='o')
 axH.scatter(motion[0], motion[1], label='Motion', color='b', marker='^')
 axH.scatter(fire[0], fire[1], label='Fire', color='r', marker='*')
 
-fig.legend()
+fig.legend(ncol=2)
 fig.set_size_inches(14, 6)
 plt.subplots_adjust(left=0.05, right=0.95, top=0.86, bottom=0.1)
 fig.savefig('temp.png', dpi=70)
