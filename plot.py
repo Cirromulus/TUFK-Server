@@ -22,8 +22,30 @@ targetHumidity = float(config[0][1])
 timestamp = [datetime.datetime.utcfromtimestamp(int(time)) for (time, _ , _ , _) in data]
 temp = [float(temp) for (_ ,temp , _ , _) in data]
 humid = [float(humid) for (_ , _ , humid , _) in data]
-#heater = [time for (time, _, _, status ) in data]
 
+fire = ([],[])
+motion = ([],[])
+heater = ([],[])
+vent = ([],[])
+for (timeS , _ , _ , statS) in data:
+    #firesens | motionsens | heater | vent
+    time = datetime.datetime.utcfromtimestamp(int(timeS))
+    stat = int(statS)
+    if stat & 1:
+        vent[0].append(time)
+        vent[1].append(10)
+    
+    if stat & (1 << 1):
+        heater[0].append(time)
+        heater[1].append(15)
+    
+    if stat & (1 << 2):
+        motion[0].append(time)
+        motion[1].append(20)
+    if stat & (1 << 3):
+        fire[0].append(time)
+        fire[1].append(25)
+    
 fig = plt.figure()
 axT = plt.subplot(111)
 
@@ -50,6 +72,10 @@ axT.grid(which='major')
 axT.axhline(targetTemperature, label="Min. Temp.", linestyle='dotted', color='r', alpha=0.5)
 axH.axhline(targetHumidity, label="Max. Humid.", linestyle='dotted', color='b', alpha=0.5)
 
+axH.scatter(vent[0], vent[1], label='Vent', color='g', marker='2')
+axH.scatter(heater[0], heater[1], label='Heater', color='y', marker='o')
+axH.scatter(motion[0], motion[1], label='Motion', color='b', marker='^')
+axH.scatter(fire[0], fire[1], label='Fire', color='r', marker='*')
 
 fig.legend()
 fig.set_size_inches(14, 6)
