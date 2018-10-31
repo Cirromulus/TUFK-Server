@@ -25,8 +25,10 @@ else
 </h1>
 <?php
 echo "Zumindest wars das zuletzt am ".date("d.m. H:i", $messpunkt['timestamp']).".";
+echo "</br >";
+echo "<span style='color: #FFFFFF'>Last Uploader IP: ".$lastUploaderIP." PS.: You can't see me!</span>"
 ?>
-</br></br>
+</br>
 <image src="./temp.png"/>
 </br>
 <table>

@@ -14,6 +14,8 @@ VALUES ('".$conn->real_escape_string($_GET["time"])."', '".$conn->real_escape_st
 if ($conn->query($sql) === TRUE)
 {
 	//echo "New record created successfully";
+	$sql = "UPDATE `ips` SET `ip`=\"".$_SERVER['REMOTE_ADDR'] ."\" WHERE 1";
+	$conn->query($sql);
 } else
 {
 	http_response_code(501);

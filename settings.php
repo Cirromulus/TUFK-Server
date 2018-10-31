@@ -52,11 +52,32 @@ if(!isset($result->field_count))
 	//echo "table exists";
 }
 
+$sql = "SELECT * FROM ips LIMIT 1;";
+$result = $conn->query($sql);
+$lastUploaderIP = 0;
+if(!isset($result->field_count))
+{
+        // sql to create table
+        $sql = "CREATE TABLE ips (
+        ip CHAR(16)
+        )";
+
+	if ($conn->query($sql) === TRUE) {
+            echo "Table ips created successfully";
+        } else {
+            echo "Error creating table: " . $conn->error;
+        }
+}else
+{
+        //echo "table exists";
+	$lastUploaderIP = mysqli_fetch_assoc($result)['ip'];
+}
+
 $bitpositions = array
 (
 	"Ventilator",
 	"Heizlüfter",
-	"Kühlschrank<br/><small>(falls er angeschlossen wäre)</small>",
-	"Irgendwas anderes"
+	"Bewegungssensor",
+	"Feueralarm<br><small>(oha!)</small>"
 );
 ?>
