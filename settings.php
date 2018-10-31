@@ -52,9 +52,9 @@ if(!isset($result->field_count))
 	//echo "table exists";
 }
 
+$lastUploaderIP = 0;
 $sql = "SELECT * FROM ips LIMIT 1;";
 $result = $conn->query($sql);
-$lastUploaderIP = 0;
 if(!isset($result->field_count))
 {
         // sql to create table
@@ -72,6 +72,24 @@ if(!isset($result->field_count))
         //echo "table exists";
 	$lastUploaderIP = mysqli_fetch_assoc($result)['ip'];
 }
+
+$result = $conn->query("SELECT * FROM config LIMIT 1;");
+if(!isset($result->field_count))
+{
+        // sql to create table
+	die("Config table not found.");
+        $sql = "CREATE TABLE config (
+        ip CHAR(16)
+        )";
+
+        if ($conn->query($sql) === TRUE) {
+            echo "Table ips created successfully";
+        } else {
+            echo "Error creating table: " . $conn->error;
+        }
+}
+
+$config = mysqli_fetch_assoc($result);
 
 $bitpositions = array
 (

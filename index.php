@@ -24,7 +24,8 @@ else
 ?>
 </h1>
 <?php
-echo "Zumindest wars das zuletzt am ".date("d.m. H:i", $messpunkt['timestamp']).".";
+echo "Zumindest wars das zuletzt am ".date("d.m. H:i", $messpunkt['timestamp']).". ";
+echo "Voraussichtlich nächste Verbindung um ".date("H:i", $messpunkt['timestamp']+$config["serverConnectionPeriodSeconds"])." Uhr.";
 echo "</br >";
 echo "<span style='color: #FFFFFF'>Last Uploader IP: ".$lastUploaderIP." PS.: You can't see me!</span>"
 ?>
