@@ -6,9 +6,14 @@ mpl.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import datetime
+import sys
+
+days = 7
+if(len(sys.argv) == 2):
+    days = int(sys.argv[1])
 
 db=_mysql.connect("localhost", "warmkram", "warmkram", "warmkram")
-db.query("""SELECT * FROM templog WHERE timestamp > (UNIX_TIMESTAMP() - 60*60*24*7) AND temp > 5;""")
+db.query("SELECT * FROM templog WHERE timestamp > (UNIX_TIMESTAMP() - 60*60*24*" + str(days) + ") AND temp > 5;")
 r=db.store_result()
 data = r.fetch_row(0)
 
@@ -23,10 +28,10 @@ timestamp = [datetime.datetime.utcfromtimestamp(int(time)) for (time, _ , _ , _)
 temp = [float(temp) for (_ ,temp , _ , _) in data]
 humid = [float(humid) for (_ , _ , humid , _) in data]
 
-fire = ([],[])
+fire   = ([],[])
 motion = ([],[])
 heater = ([],[])
-vent = ([],[])
+vent   = ([],[])
 for (timeS , _ , _ , statS) in data:
     #firesens | motionsens | heater | vent
     time = datetime.datetime.utcfromtimestamp(int(timeS))
@@ -42,6 +47,7 @@ for (timeS , _ , _ , statS) in data:
     if stat & (1 << 2):
         motion[0].append(time)
         motion[1].append(20)
+
     if stat & (1 << 3):
         fire[0].append(time)
         fire[1].append(25)
@@ -67,6 +73,7 @@ axT.xaxis.set_minor_formatter(dates.DateFormatter('%H:%M'))  # hours and minutes
 axT.xaxis.set_major_locator(dates.DayLocator(interval=1))    # every day
 axT.xaxis.set_major_formatter(dates.DateFormatter('\n%d.%m.%Y')) 
 axT.set_xlim(left=timestamp[0])
+axT.set_ylim(bottom=0)
 axT.grid(which='major')
 
 axT.axhline(targetTemperature, label="Min. Temp.", linestyle='dotted', color='r', alpha=0.5)
