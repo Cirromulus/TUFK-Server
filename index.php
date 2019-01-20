@@ -30,7 +30,7 @@ echo "</br >";
 echo "<span style='color: #FFFFFF'>Last Uploader IP: ".$lastUploaderIP." PS.: You can't see me!</span>"
 ?>
 </br>
-<image src="./temp.png"/>
+<image style="max-width: 100%;" src="./temp.png"/>
 </br>
 <table>
 <?php

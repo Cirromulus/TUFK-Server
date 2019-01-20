@@ -6,6 +6,7 @@ mpl.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import datetime
+#from datetime import time, tzinfo, timedelta
 import sys
 
 days = 7
@@ -22,7 +23,6 @@ r = db.store_result()
 config = r.fetch_row(0)
 targetTemperature = float(config[0][0])
 targetHumidity = float(config[0][1])
-
 
 timestamp = [datetime.datetime.utcfromtimestamp(int(time)) for (time, _ , _ , _) in data]
 temp = [float(temp) for (_ ,temp , _ , _) in data]
@@ -85,8 +85,8 @@ axH.scatter(motion[0], motion[1], label='Motion', color='b', marker='^')
 axH.scatter(fire[0], fire[1], label='Fire', color='r', marker='*')
 
 fig.legend(ncol=2)
-fig.set_size_inches(14, 6)
+fig.set_size_inches(15, 6)
 plt.subplots_adjust(left=0.05, right=0.95, top=0.86, bottom=0.1)
-fig.savefig('temp.png', dpi=70)
+fig.savefig('temp.png', dpi=150)
 
 print("OK")
