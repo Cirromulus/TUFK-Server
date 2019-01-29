@@ -83,4 +83,14 @@ $bitpositions = array
 	"Bewegungssensor",
 	"Feueralarm<br><small>(oha!)</small>"
 );
+$confignames = array(
+        array("targetTemperature", "Temperature	Minimum"),
+        array("temp_lower_limit", "Lower Temperature Threshold Delta"),
+        array("temp_upper_limit", "Upper Temperature Threshold Delta"),
+        array("targetHumidity",	"Humidity Maximum"),
+        array("humid_lower_limit", "Lower Humidity Threshold Delta"),
+        array("humid_upper_limit", "Upper Humidiy Threshold Delta"),
+        array("samplingPeriodSeconds", "Sampling Period	in Seconds"),
+        array("serverConnectionPeriodSeconds", "Server Connection Period in Seconds") 
+);
 ?>
