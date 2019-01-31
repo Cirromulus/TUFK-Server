@@ -25,7 +25,16 @@ else
 </h1>
 <?php
 echo "Zumindest wars das zuletzt am ".date("d.m. H:i", $messpunkt['timestamp']).". ";
+$missedTimewindow = time() > $messpunkt['timestamp']+$config["serverConnectionPeriodSeconds"];
+if($missedTimewindow)
+{
+	echo "<strike>";
+}
 echo "Voraussichtlich nächste Verbindung um ".date("H:i", $messpunkt['timestamp']+$config["serverConnectionPeriodSeconds"])." Uhr.";
+if($missedTimewindow)
+{
+	echo "</strike>";
+}
 ?>
 </br>
 <image style="max-width: 100%;" src="./temp.png"/>
