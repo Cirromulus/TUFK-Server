@@ -8,10 +8,17 @@ import matplotlib.ticker as ticker
 import datetime
 #from datetime import time, tzinfo, timedelta
 import sys
+import numpy
+import math
+
+def running_mean(x, N):
+    cumsum = numpy.cumsum(numpy.insert(x, 0, 0)) 
+    return (cumsum[N:] - cumsum[:-N]) / float(N)
 
 days = 7
 if(len(sys.argv) == 2):
     days = int(sys.argv[1])
+    print(str(days) + " days of history")
 
 db=_mysql.connect("localhost", "warmkram", "warmkram", "warmkram")
 db.query("SELECT * FROM templog WHERE timestamp > (UNIX_TIMESTAMP() - 60*60*24*" + str(days) + ") AND temp > 5;")
@@ -37,6 +44,11 @@ humid_upper_limit = targetHumidity + float(config[ind])
 timestamp = [datetime.datetime.utcfromtimestamp(int(time)) for (time, _ , _ , _) in data]
 temp = [float(temp) for (_ ,temp , _ , _) in data]
 humid = [float(humid) for (_ , _ , humid , _) in data]
+
+avg_windowsize = math.floor(len(timestamp) / (days * 6))
+avg_temp  = running_mean(temp , avg_windowsize)
+avg_humid = running_mean(humid, avg_windowsize)
+
 
 fire   = ([],[])
 motion = ([],[])
@@ -66,6 +78,7 @@ fig = plt.figure()
 axT = plt.subplot(111)
 
 axT.plot(timestamp, temp, label="Temperature", color='r')
+axT.plot(timestamp[math.floor(avg_windowsize/2)-1:math.floor(-avg_windowsize/2)], avg_temp, color='#FF7000', alpha=0.75)
 plt.ylabel("Temperature in °C")
 axT.yaxis.set_major_locator(ticker.AutoLocator())
 axT.yaxis.set_minor_locator(ticker.AutoMinorLocator())
@@ -73,6 +86,7 @@ axT.yaxis.set_minor_locator(ticker.AutoMinorLocator())
 
 axH = axT.twinx()
 axH.plot(timestamp, humid, label="Humidity", color='b')
+axH.plot(timestamp[math.floor(avg_windowsize/2)-1:math.floor(-avg_windowsize/2)], avg_humid, color='#00A0FF', alpha=0.75)
 axH.set_ylim(0, 100)
 plt.ylabel("Humidity in rel. %")
 axH.yaxis.set_major_locator(ticker.AutoLocator())
