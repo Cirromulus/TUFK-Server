@@ -21,7 +21,7 @@ if(isset($_GET['update']))
 	if(($result = $conn->query($statement)) === TRUE)
 	{
 		echo "update OK";
-		echo "</br><a href='?mega_secure=yes'><button>Back</button></a>";
+		echo "</br><a href='/'><button>Back</button></a>";
 		die();
 	}
 	else
