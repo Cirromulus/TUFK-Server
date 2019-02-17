@@ -35,5 +35,6 @@ foreach($output as $line)
 	echo $line."<br />";
 }
 ?>
+</br><a href='/'><button>Back</button></a>
 </body>
 </html>
