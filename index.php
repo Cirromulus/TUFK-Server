@@ -1,4 +1,17 @@
-<?php include_once("settings.php"); ?>
+<?php
+include_once("settings.php");
+$res = "";
+if(isset($_GET['redraw']))
+{
+	if ( filter_var($_GET['redraw'], FILTER_VALIDATE_INT) === false ) {
+ 		echo "Your variable is not an integer";
+	}
+	else
+	{
+		$res = shell_exec("./plot.py ".$_GET['redraw']);
+	}
+}
+?>
 <html>
 <head>
 <script type="text/javascript">
@@ -35,10 +48,11 @@ if($missedTimewindow)
 {
 	echo "</strike>";
 }
+echo "<br />".$res."<br />";
 ?>
-</br>
-<image style="max-width: 100%;" src="./temp.png"/>
-</br>
+<br />
+<image style="max-width: 100%;" src="./temp.png?<?php echo filemtime('temp.png'); ?>"/>
+<br />
 <table>
 <?php
 for($el = 0; $el < sizeof($bitpositions); $el++)
