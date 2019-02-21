@@ -2,10 +2,10 @@
 <head></head>
 <body>
 <?php
-$output = array();
 if(isset($_POST['update']))
 {
 	echo "Update: ".$_POST['update'];
+	$output = array();
 	if($_POST['update'] == "onoff")
 	{
 		$res = exec("ssh -o BatchMode=yes -o StrictHostKeyChecking=no -i id_rsa pi@10.8.0.5 irsend SEND_ONCE HEATER ONOFF", $output, $return);
@@ -25,6 +25,10 @@ if(isset($_POST['update']))
 	{
 		echo "unsupported";
 	}
+	foreach($output as $line)
+	{
+		echo $line."<br />";
+	}
 }
 else
 {
@@ -41,10 +45,6 @@ else
 		<button name="update" value="restart">Restart Service</button>
 	</form><br />
 <?php
-}
-foreach($output as $line)
-{
-	echo $line."<br />";
 }
 ?>
 </br><a href='/'><button>Back</button></a>
