@@ -11,9 +11,28 @@ import sys
 import numpy
 import math
 
-def running_mean(x, N):
-    cumsum = numpy.cumsum(numpy.insert(x, 0, 0)) 
-    return (cumsum[N:] - cumsum[:-N]) / float(N)
+def weighted_mean(x, N):
+    if N % 2 == 1:
+        N = N + 1
+    weights = list(range(1,int(N/2)))
+    weights.extend(range(int(N/2),0,-1))
+    #print(weights)
+    weights = [w / sum(weights) for w in weights]
+    #print(weights)
+    avg = []
+    xlen = len(x)
+    for i in range(len(x)):
+        #print(str(i) + str(x[i]))
+        elem = 0
+        for j in range(len(weights)):
+            idx = i + (j - int(len(weights)/2))
+            idx = 0 if idx < 0 else idx
+            idx = i if idx >= xlen else idx
+            #print("j, idx: " + str(j) + " " + str(idx))
+            elem = elem + x[idx] * weights[j]
+        avg.append(elem)
+    #print("AVG: " + str(avg))
+    return avg
 
 days = 7
 if(len(sys.argv) == 2):
@@ -45,10 +64,12 @@ timestamp = [datetime.datetime.utcfromtimestamp(int(time)) for (time, _ , _ , _)
 temp = [float(temp) for (_ ,temp , _ , _) in data]
 humid = [float(humid) for (_ , _ , humid , _) in data]
 
-avg_windowsize = math.floor(len(timestamp) / (days * 6))
-avg_temp  = running_mean(temp , avg_windowsize)
-avg_humid = running_mean(humid, avg_windowsize)
+avg_windowsize = math.floor(len(timestamp) / (days * 4))
 
+avg_temp  = weighted_mean(temp , avg_windowsize)
+avg_humid = weighted_mean(humid, avg_windowsize)
+
+print(str(len(timestamp)) + " samples")
 
 fire   = ([],[])
 motion = ([],[])
@@ -90,8 +111,10 @@ plt.ylabel("Humidity in rel. %")
 axH.yaxis.set_major_locator(ticker.AutoLocator())
 axH.yaxis.set_minor_locator(ticker.AutoMinorLocator())
 
-axT.plot(timestamp[math.floor(avg_windowsize/2)-1:math.floor(-avg_windowsize/2)], avg_temp , color='#FF7000', alpha=0.75)
-axH.plot(timestamp[math.floor(avg_windowsize/2)-1:math.floor(-avg_windowsize/2)], avg_humid, color='#00A0FF', alpha=0.75)
+#axT.plot(timestamp[math.floor(avg_windowsize/2)-1:math.floor(-avg_windowsize/2)], avg_temp , color='#FF7000', alpha=0.75)
+#axH.plot(timestamp[math.floor(avg_windowsize/2)-1:math.floor(-avg_windowsize/2)], avg_humid, color='#00A0FF', alpha=0.75)
+axT.plot(timestamp, avg_temp , color='#FF7000', alpha=0.75)
+axH.plot(timestamp, avg_humid, color='#00A0FF', alpha=0.75)
 
 axT.xaxis.set_minor_locator(dates.HourLocator(byhour=[x*6 for x in range(1,int(24/6))]))
 axT.xaxis.set_minor_formatter(dates.DateFormatter('%H:%M'))  # hours and minutes
