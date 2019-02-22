@@ -24,6 +24,15 @@ if(isset($_POST['update']))
 			echo $line."<br />";
 		}
 	}
+	else if($_POST['update'] == "plus")
+	{
+    	$res = exec("ssh -o BatchMode=yes -o StrictHostKeyChecking=no -i id_rsa pi@10.8.0.5 irsend SEND_ONCE HEATER UP", $output, $return);
+		echo "command sent.";
+		foreach($output as $line)
+        	{
+			echo $line."<br />";
+		}
+	}
 	else if($_POST['update'] == "restart")
 	{
 		$res = exec("ssh -o BatchMode=yes -o StrictHostKeyChecking=no -i id_rsa pi@10.8.0.5 sudo systemctl restart controller", $output, $return);
@@ -48,6 +57,10 @@ else
 	<form method="post">
 		Note: Can only switch heater on if off, if heater is on, it will get in an interesting different state :o<br />
 		<button name="update" value="onoffPlus">ONOFF mit UP Senden</button>
+	</form><br />
+	<form method="post">
+		Note: Can only switch heater on if half mode<br />
+		<button name="update" value="plus">UP Senden</button>
 	</form><br />
 	<form method="post">
 		<button name="update" value="restart">Restart Service</button>
