@@ -4,47 +4,36 @@
 <?php
 if(isset($_POST['update']))
 {
+    $output = array();
 	echo "Update: ".$_POST['update']." ";
 	$output = array();
 	if($_POST['update'] == "onoff")
 	{
 		$res = exec("ssh -o BatchMode=yes -o StrictHostKeyChecking=no -i id_rsa pi@10.8.0.5 irsend SEND_ONCE HEATER ONOFF", $output, $return);
 		echo "command sent.";
-		foreach($output as $line)
-		{
-			echo $line."<br />";
-		}
 	}
 	else if($_POST['update'] == "onoffPlus")
 	{
         	$res = exec("ssh -o BatchMode=yes -o StrictHostKeyChecking=no -i id_rsa pi@10.8.0.5 irsend SEND_ONCE HEATER ONOFF ; sleep 0.25 ; irsend SEND_ONCE HEATER UP", $output, $return);
 		echo "command sent.";
-		foreach($output as $line)
-        	{
-			echo $line."<br />";
-		}
 	}
 	else if($_POST['update'] == "plus")
 	{
     	$res = exec("ssh -o BatchMode=yes -o StrictHostKeyChecking=no -i id_rsa pi@10.8.0.5 irsend SEND_ONCE HEATER UP", $output, $return);
 		echo "command sent.";
-		foreach($output as $line)
-        	{
-			echo $line."<br />";
-		}
 	}
 	else if($_POST['update'] == "restart")
 	{
-		$res = exec("ssh -o BatchMode=yes -o StrictHostKeyChecking=no -i id_rsa pi@10.8.0.5 sudo systemctl restart controller", $output, $return);
+		$res = exec("ssh -o BatchMode=yes -o StrictHostKeyChecking=no -i id_rsa pi@10.8.0.5 sudo systemctl restart controller 2>&1", $output, $return);
 		echo "command sent.";
-		foreach($output as $line)
-		{
-			echo $line."<br />";
-		}
 	}
 	else
 	{
 		echo "unsupported";
+	}
+	foreach($output as $line)
+	{
+		echo $line."<br />";
 	}
 }
 else
@@ -68,6 +57,6 @@ else
 <?php
 }
 ?>
-</br><a href='/'><button>Back</button></a>
+<br /><a href='/'><button>Back</button></a>
 </body>
 </html>
