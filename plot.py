@@ -98,23 +98,23 @@ for (timeS , _ , _ , statS) in data:
 fig = plt.figure()
 axT = plt.subplot(111)
 
-axT.plot(timestamp, temp, label="Temperature", color='r')
+axT.plot(timestamp, temp, label="Temperature", color='r', alpha=1)
 plt.ylabel("Temperature in °C")
 axT.yaxis.set_major_locator(ticker.AutoLocator())
 axT.yaxis.set_minor_locator(ticker.AutoMinorLocator())
 #axT.set_ylim(bottom=0)
 
 axH = axT.twinx()
-axH.plot(timestamp, humid, label="Humidity", color='b')
+axH.plot(timestamp, humid, label="Humidity", color='b', alpha=0.8)
 axH.set_ylim(0, 100)
 plt.ylabel("Humidity in rel. %")
 axH.yaxis.set_major_locator(ticker.AutoLocator())
 axH.yaxis.set_minor_locator(ticker.AutoMinorLocator())
 
-#axT.plot(timestamp[math.floor(avg_windowsize/2)-1:math.floor(-avg_windowsize/2)], avg_temp , color='#FF7000', alpha=0.75)
-#axH.plot(timestamp[math.floor(avg_windowsize/2)-1:math.floor(-avg_windowsize/2)], avg_humid, color='#00A0FF', alpha=0.75)
-axT.plot(timestamp, avg_temp , color='#FF7000', alpha=0.75)
-axH.plot(timestamp, avg_humid, color='#00A0FF', alpha=0.75)
+#axT.plot(timestamp[math.floor(avg_windowsize/2)-1:math.floor(-avg_windowsize/2)], avg_temp , color='#FF7000', alpha=0.8)
+#axH.plot(timestamp[math.floor(avg_windowsize/2)-1:math.floor(-avg_windowsize/2)], avg_humid, color='#00A0FF', alpha=0.8)
+axT.plot(timestamp, avg_temp , color='#ffa393', alpha=0.8)
+axH.plot(timestamp, avg_humid, color='#1090FF', alpha=0.8)
 
 axT.xaxis.set_minor_locator(dates.HourLocator(byhour=[x*6 for x in range(1,int(24/6))]))
 axT.xaxis.set_minor_formatter(dates.DateFormatter('%H:%M'))  # hours and minutes
