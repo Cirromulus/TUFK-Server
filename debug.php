@@ -14,7 +14,7 @@ if(isset($_POST['update']))
 	}
 	else if($_POST['update'] == "onoffPlus")
 	{
-        	$res = exec("ssh -o BatchMode=yes -o StrictHostKeyChecking=no -i id_rsa pi@10.8.0.5 irsend SEND_ONCE HEATER ONOFF ; sleep 0.25 ; irsend SEND_ONCE HEATER UP", $output, $return);
+        	$res = exec("ssh -o BatchMode=yes -o StrictHostKeyChecking=no -i id_rsa pi@10.8.0.5 'irsend SEND_ONCE HEATER ONOFF ; sleep 1 ; irsend SEND_ONCE HEATER UP'", $output, $return);
 		echo "command sent.";
 	}
 	else if($_POST['update'] == "plus")

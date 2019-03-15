@@ -14,7 +14,7 @@ import math
 def weighted_mean(x, N):
     if N % 2 == 1:
         N = N + 1
-    weights = list(range(1,int(N/2)))
+    weights = list(range(1,int(N/2),1))
     weights.extend(range(int(N/2),0,-1))
     #print(weights)
     weights = [w / sum(weights) for w in weights]
