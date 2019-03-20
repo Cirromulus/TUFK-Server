@@ -50,10 +50,10 @@ if($missedTimewindow)
 }
 echo "<br />".$res."<br />";
 ?>
-<br />
 <image style="max-width: 100%;" src="./temp.png?<?php echo filemtime('temp.png'); ?>"/>
 <br />
-<table>
+<span style="display: block; text-align: center;"><a href="./cam.php">Kamera</a>, <a href="./setconf.php">Konfiguration ändern</a></span>
+<table style="float: left;">
 <?php
 for($el = 0; $el < sizeof($bitpositions); $el++)
 {
@@ -69,6 +69,14 @@ for($el = 0; $el < sizeof($bitpositions); $el++)
 }
 ?>
 </table>
+<div style="float: right;">
+	<form method="post">
+		<button name="update" value="onoff">ONOFF Senden</button><br />
+		<button name="update" value="onoffPlus">ONOFF mit UP Senden</button><br />
+		<button name="update" value="plus">UP Senden</button><br />
+		<button name="update" value="restart">Restart Service</button>
+	</form>
+</div>
 </body>
 </html>
 <?php $conn->close(); ?>

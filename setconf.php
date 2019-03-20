@@ -1,10 +1,5 @@
 <?php
 include_once("settings.php");
-if(!isset($_GET['mega_secure']) && $_GET['mega_secure'] != "yes")
-{
-	$conn->close();
-	die("no auth");
-}
 
 if(isset($_GET['update']))
 {
