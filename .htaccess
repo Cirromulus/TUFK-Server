@@ -3,6 +3,11 @@ AuthName "Proberaumsteuerung"
 AuthUserFile /var/www/vhosts/wiewarmistesbei.exsilencio.de/.htpasswd
 require valid-user
 
+<Files ~ "^(upload|config).php$">
+	Allow from all
+	Satisfy Any
+</Files>
+
 <Files ~ "\.py$">
 Order allow,deny
 Deny from all
