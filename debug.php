@@ -41,17 +41,11 @@ else
 ?>
 	<form method="post">
 		Note: Can only switch heater off if on, if heater is off, it will get in an interesting different state :o<br />
-		<button name="update" value="onoff">ONOFF Senden</button>
-	</form><br />
-	<form method="post">
+		<button name="update" value="onoff">ONOFF Senden</button><br />
 		Note: Can only switch heater on if off, if heater is on, it will get in an interesting different state :o<br />
-		<button name="update" value="onoffPlus">ONOFF mit UP Senden</button>
-	</form><br />
-	<form method="post">
+		<button name="update" value="onoffPlus">ONOFF mit UP Senden</button><br />
 		Note: Can only switch heater on if half mode<br />
-		<button name="update" value="plus">UP Senden</button>
-	</form><br />
-	<form method="post">
+		<button name="update" value="plus">UP Senden</button><br />
 		<button name="update" value="restart">Restart Service</button>
 	</form><br />
 <?php
