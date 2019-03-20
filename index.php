@@ -48,34 +48,49 @@ if($missedTimewindow)
 {
 	echo "</strike>";
 }
-echo "<br />".$res."<br />";
+if($res != "") echo "<br />".$res."<br />";
 ?>
+<span> (<a href="./cam.php">Kamera</a>)</span>
 <image style="max-width: 100%;" src="./temp.png?<?php echo filemtime('temp.png'); ?>"/>
 <br />
-<span style="display: block; text-align: center;"><a href="./cam.php">Kamera</a>, <a href="./setconf.php">Konfiguration ändern</a></span>
-<table style="float: left;">
-<?php
-for($el = 0; $el < sizeof($bitpositions); $el++)
-{
-	echo "<tr><td>".$bitpositions[$el]."</td><td><span style=\"color: ";
-	if($messpunkt['actuatorStatus'] & 1 << $el)
-	{
-		echo "green;\">An";
-	}else
-	{
-		echo "red;\">Aus";
-	}
-	echo "</span></td><td><button onclick=\"javascript:umschalten(this);\">umschalten</button></td></tr>";
-}
-?>
-</table>
-<div style="float: right;">
-	<form method="post">
-		<button name="update" value="onoff">ONOFF Senden</button><br />
-		<button name="update" value="onoffPlus">ONOFF mit UP Senden</button><br />
-		<button name="update" value="plus">UP Senden</button><br />
-		<button name="update" value="restart">Restart Service</button>
-	</form>
+<div style="display: flex; justify-content: space-evenly; align-items: center;">
+	<table style="display: inline-block;">
+		<?php
+		for($el = 0; $el < sizeof($bitpositions); $el++)
+		{
+			echo "<tr><td>".$bitpositions[$el]."</td><td><span style=\"color: ";
+			if($messpunkt['actuatorStatus'] & 1 << $el)
+			{
+				echo "green;\">An";
+			}else
+			{
+				echo "red;\">Aus";
+			}
+			echo "</span></td><td><button onclick=\"javascript:umschalten(this);\">umschalten</button></td></tr>";
+		}
+		?>
+	</table>
+	<div style="display: inline-block;">
+		<form method="post" action="./setconf.php?update=yes">
+		<table>
+		<?php
+		foreach($confignames as $name)
+		{
+			echo '<tr><td>'.$name[1].':</td><td><input type="text" name="'.$name[0].'" value="'.$config[$name[0]].'"></td></tr>';
+		}
+		?>
+		</table>
+		<input type="submit" value="Submit">
+		</form>
+	</div>
+	<div style="display: inline-block;">
+		<form method="post" action="./debug.php">
+			<button name="update" value="onoff">ONOFF Senden</button><br />
+			<button name="update" value="onoffPlus">ONOFF mit UP Senden</button><br />
+			<button name="update" value="plus">UP Senden</button><br />
+			<button name="update" value="restart">Restart Service</button>
+		</form>
+	</div>
 </div>
 </body>
 </html>
