@@ -53,7 +53,7 @@ if($res != "") echo "<br />".$res."<br />";
 <span> (<a href="./cam.php">Kamera</a>)</span>
 <image style="max-width: 100%;" src="./temp.png?<?php echo filemtime('temp.png'); ?>"/>
 <br />
-<div style="display: flex; justify-content: space-evenly; align-items: center;">
+<div style="display: flex; justify-content: space-evenly; align-items: baseline;">
 	<table style="display: inline-block;">
 		<?php
 		for($el = 0; $el < sizeof($bitpositions); $el++)
