@@ -36,24 +36,29 @@ else
 }
 ?>
 </h1>
+<div style="position: absolute;">
 <?php
-echo "Zumindest wars das zuletzt am ".date("d.m. H:i", $messpunkt['timestamp']).". ";
-$missedTimewindow = time() > $messpunkt['timestamp']+$config["serverConnectionPeriodSeconds"];
-if($missedTimewindow)
-{
-	echo "<strike>";
-}
-echo "Voraussichtlich nächste Verbindung um ".date("H:i", $messpunkt['timestamp']+$config["serverConnectionPeriodSeconds"])." Uhr.";
-if($missedTimewindow)
-{
-	echo "</strike>";
-}
-?>
-<span> (<a href="./cam.php">Kamera</a>)</span>
-<br /><form style="display: inline; position: absolute;" method="get"><input type="text" size="3" name="redraw" value="<?php if(isset($_GET['redraw'])) { echo $_GET['redraw']; } else { echo "7"; }?>"/><button type="submit">days of history</button></form>
-<?php
-if($res != "") echo $res;
-?>
+	echo "Zumindest wars das zuletzt am ".date("d.m. H:i", $messpunkt['timestamp']).". ";
+	$missedTimewindow = time() > $messpunkt['timestamp']+$config["serverConnectionPeriodSeconds"];
+	if($missedTimewindow)
+	{
+		echo "<strike>";
+	}
+	echo "Voraussichtlich nächste Verbindung um ".date("H:i", $messpunkt['timestamp']+$config["serverConnectionPeriodSeconds"])." Uhr.";
+	if($missedTimewindow)
+	{
+		echo "</strike>";
+	}
+	?>
+	<span> (<a href="./cam.php">Kamera</a>)</span>
+	<br />
+	<form style="display: inline;" method="get">
+		<input type="text" size="3" name="redraw" value="<?php if(isset($_GET['redraw'])) { echo $_GET['redraw']; } else { echo "7"; }?>"/><button type="submit">days of history</button>
+		<?php
+		if($res != "") echo $res;
+		?>
+	</form>
+</div>
 <image style="max-width: 100%;" src="./temp.png?<?php echo filemtime('temp.png'); ?>"/>
 <br />
 <div style="display: flex; justify-content: space-evenly; align-items: baseline;">

@@ -98,14 +98,14 @@ for (timeS , _ , _ , statS) in data:
 fig = plt.figure()
 axT = plt.subplot(111)
 
-axT.plot(timestamp, temp, label="Temperature", color='r', alpha=1)
+axT.plot(timestamp, temp, label="Temperature", linewidth=1.25, color='r', alpha=1)
 plt.ylabel("Temperature in °C")
 axT.yaxis.set_major_locator(ticker.AutoLocator())
 axT.yaxis.set_minor_locator(ticker.AutoMinorLocator())
 #axT.set_ylim(bottom=0)
 
 axH = axT.twinx()
-axH.plot(timestamp, humid, label="Humidity", color='b', alpha=0.8)
+axH.plot(timestamp, humid, label="Humidity", linewidth=1.25, color='b', alpha=0.8)
 axH.set_ylim(0, 100)
 plt.ylabel("Humidity in rel. %")
 axH.yaxis.set_major_locator(ticker.AutoLocator())
