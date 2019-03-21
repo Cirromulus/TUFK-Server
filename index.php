@@ -48,9 +48,12 @@ if($missedTimewindow)
 {
 	echo "</strike>";
 }
-if($res != "") echo "<br />".$res."<br />";
 ?>
 <span> (<a href="./cam.php">Kamera</a>)</span>
+<br /><form style="display: inline; position: absolute;" method="get"><input type="text" size="3" name="redraw" value="<?php if(isset($_GET['redraw'])) { echo $_GET['redraw']; } else { echo "7"; }?>"/><button type="submit">days of history</button></form>
+<?php
+if($res != "") echo $res;
+?>
 <image style="max-width: 100%;" src="./temp.png?<?php echo filemtime('temp.png'); ?>"/>
 <br />
 <div style="display: flex; justify-content: space-evenly; align-items: baseline;">
