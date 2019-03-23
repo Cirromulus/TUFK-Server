@@ -39,7 +39,7 @@ else
 <div style="position: absolute;">
 <?php
 	echo "Zumindest wars das zuletzt am ".date("d.m. H:i", $messpunkt['timestamp']).". ";
-	$missedTimewindow = time() > $messpunkt['timestamp']+$config["serverConnectionPeriodSeconds"];
+	$missedTimewindow = time() > $messpunkt['timestamp']+($config["serverConnectionPeriodSeconds"]+10);
 	if($missedTimewindow)
 	{
 		echo "<strike>";
@@ -61,7 +61,13 @@ else
 </div>
 <image style="max-width: 100%;" src="./temp.png?<?php echo filemtime('temp.png'); ?>"/>
 <br />
-<div style="display: flex; justify-content: space-evenly; align-items: baseline;">
+<div style="display: flex; justify-content: space-evenly; align-items: end;">
+	<div style="display: inline-block;">
+		<img width="200px" src="/image.jpg?<?php echo filemtime('image.jpg');?>"/><br />
+		<form style="display: inline;" method="post" action="/cam.php">
+			<button name="update" value="Ja">Neu Aufnehmen</button>
+		</form>
+	</div>
 	<table style="display: inline-block;">
 		<?php
 		for($el = 0; $el < sizeof($bitpositions); $el++)
@@ -79,7 +85,7 @@ else
 		?>
 	</table>
 	<div style="display: inline-block;">
-		<form method="post" action="./setconf.php?update=yes">
+		<form method="post" action="/setconf.php?update=yes">
 		<table>
 		<?php
 		foreach($confignames as $name)
