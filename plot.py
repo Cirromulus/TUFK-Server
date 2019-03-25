@@ -50,6 +50,8 @@ config = r.fetch_row(0)[0]
 ind = 0
 targetTemperature = float(config[ind])
 ind += 1
+temp_max_delta = targetTemperature + float(config[ind])
+ind += 1
 temp_upper_limit = targetTemperature + float(config[ind])
 ind += 1
 temp_lower_limit = targetTemperature - float(config[ind])
@@ -125,12 +127,16 @@ axT.set_ylim(bottom=0)
 axT.grid(which='major')
 
 axT.axhline(targetTemperature, label="Min. Temp.", linestyle='--', color='r', alpha=0.5)
-axT.axhline(temp_upper_limit,                      linestyle=':', color='r', alpha=0.25)
-axT.axhline(temp_lower_limit,                      linestyle=':', color='r', alpha=0.25)
+axT.axhline(temp_max_delta,                        linestyle=':', color='r', alpha=0.15)
+axT.axhline(temp_upper_limit,                      linestyle='-.', color='r', alpha=0.25)
+if(temp_lower_limit != targetTemperature):
+    axT.axhline(temp_lower_limit,                      linestyle='-.', color='r', alpha=0.25)
+
 
 axH.axhline(targetHumidity, label="Max. Humid.", linestyle='--', color='b', alpha=0.5)
-axH.axhline(humid_upper_limit,                   linestyle=':', color='b', alpha=0.25)
-axH.axhline(humid_lower_limit,                   linestyle=':', color='b', alpha=0.25)
+axH.axhline(humid_upper_limit,                   linestyle='-.', color='b', alpha=0.25)
+if(humid_lower_limit != targetHumidity):
+    axH.axhline(humid_lower_limit,                   linestyle=':', color='b', alpha=0.25)
 
 axH.scatter(vent[0], vent[1], label='Vent', color='g', marker='2')
 axH.scatter(heater[0], heater[1], label='Heater', color='y', marker='o')
