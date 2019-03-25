@@ -2,6 +2,7 @@
 import _mysql
 import matplotlib as mpl
 import matplotlib.dates as dates
+from matplotlib.ticker import MaxNLocator
 mpl.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
@@ -125,6 +126,7 @@ axT.xaxis.set_major_formatter(dates.DateFormatter('\n%d.%m.%Y'))
 axT.set_xlim(left=timestamp[0])
 axT.set_ylim(bottom=0)
 axT.grid(which='major')
+axT.yaxis.set_major_locator(MaxNLocator(integer=True))
 
 axT.axhline(targetTemperature, label="Min. Temp.", linestyle='--', color='r', alpha=0.5)
 axT.axhline(temp_max_delta,                        linestyle=':', color='r', alpha=0.15)
@@ -134,9 +136,9 @@ if(temp_lower_limit != targetTemperature):
 
 
 axH.axhline(targetHumidity, label="Max. Humid.", linestyle='--', color='b', alpha=0.5)
-axH.axhline(humid_upper_limit,                   linestyle='-.', color='b', alpha=0.25)
-if(humid_lower_limit != targetHumidity):
-    axH.axhline(humid_lower_limit,                   linestyle=':', color='b', alpha=0.25)
+if(humid_upper_limit != targetHumidity):
+    axH.axhline(humid_upper_limit,                   linestyle='-.', color='b', alpha=0.4)
+axH.axhline(humid_lower_limit,                   linestyle='-.', color='b', alpha=0.4)
 
 axH.scatter(vent[0], vent[1], label='Vent', color='g', marker='2')
 axH.scatter(heater[0], heater[1], label='Heater', color='y', marker='o')
