@@ -23,7 +23,7 @@ function umschalten(referrer)
 </head>
 <body>
 <h1><?php
-$result = $conn->query("SELECT * FROM ".$temptable." ORDER BY timestamp DESC LIMIT 1;"); 
+$result = $conn->query("SELECT * FROM ".$temptable." ORDER BY timestamp DESC LIMIT 1;");
 $messpunkt = array();
 if($result->num_rows == 0)
 {
@@ -61,7 +61,7 @@ else
 </div>
 <image style="max-width: 100%;" src="./temp.png?<?php echo filemtime('temp.png'); ?>"/>
 <br />
-<div style="display: flex; justify-content: space-evenly; align-items: end;">
+<div style="display: flex; justify-content: space-evenly; align-items: inherit;">
 	<div style="display: inline-block;">
 		<img width="200px" src="/image.jpg?<?php echo filemtime('image.jpg');?>"/><br />
 		<form style="display: inline;" method="post" action="/cam.php">
