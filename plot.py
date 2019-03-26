@@ -80,7 +80,7 @@ heater = ([],[])
 vent   = ([],[])
 for (timeS , _ , _ , statS) in data:
     #firesens | motionsens | heater | vent
-    time = datetime.datetime.utcfromtimestamp(int(timeS))
+    time = datetime.datetime.fromtimestamp(int(timeS))
     stat = int(statS)
     if stat & 1:
         vent[0].append(time)
@@ -119,7 +119,11 @@ axH.yaxis.set_minor_locator(ticker.AutoMinorLocator())
 axT.plot(timestamp, avg_temp , color='#ffa393', alpha=0.8)
 axH.plot(timestamp, avg_humid, color='#1090FF', alpha=0.8)
 
-axT.xaxis.set_minor_locator(dates.HourLocator(byhour=[x*6 for x in range(1,int(24/6))]))
+hours = [x*6 for x in range(1,int(24/4))]
+if(days <= 2):
+    hours = [x*3 for x in range(1,int(24/2))]
+
+axT.xaxis.set_minor_locator(dates.HourLocator(byhour=hours))
 axT.xaxis.set_minor_formatter(dates.DateFormatter('%H:%M'))  # hours and minutes
 axT.xaxis.set_major_locator(dates.DayLocator(interval=1))    # every day
 axT.xaxis.set_major_formatter(dates.DateFormatter('\n%d.%m.%Y')) 
