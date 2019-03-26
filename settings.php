@@ -86,8 +86,8 @@ $bitpositions = array
 $confignames = array(
         array("targetTemperature", "Temperature	Minimum"),
         array("temp_max_delta", "Maximum Temperature Deviation"),
-        array("temp_lower_limit", "Lower Temperature Threshold Delta"),
         array("temp_upper_limit", "Upper Temperature Threshold Delta"),
+        array("temp_lower_limit", "Lower Temperature Threshold Delta"),
         array("targetHumidity",	"Humidity Maximum"),
         array("humid_lower_limit", "Lower Humidity Threshold Delta"),
         array("humid_upper_limit", "Upper Humidiy Threshold Delta"),
