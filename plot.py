@@ -63,7 +63,7 @@ humid_lower_limit = targetHumidity - float(config[ind])
 ind += 1
 humid_upper_limit = targetHumidity + float(config[ind])
 
-timestamp = [datetime.datetime.utcfromtimestamp(int(time)) for (time, _ , _ , _) in data]
+timestamp = [datetime.datetime.fromtimestamp(int(time)) for (time, _ , _ , _) in data]
 temp = [float(temp) for (_ ,temp , _ , _) in data]
 humid = [float(humid) for (_ , _ , humid , _) in data]
 
