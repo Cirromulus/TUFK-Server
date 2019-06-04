@@ -52,21 +52,32 @@ if(!isset($result->field_count))
 	//echo "table exists";
 }
 
-$result = $conn->query("SELECT * FROM config LIMIT 1;");
+$result = $conn->query("SELECT * FROM config ORDER BY id DESC LIMIT 1;");
 if(!isset($result->field_count))
 {
         // sql to create table
 	die("Config table not found.");
-        $sql = "CREATE TABLE config (
-        targetTemperature FLOAT,
-	temp_upper_limit FLOAT,
-	temp_lower_limit FLOAT,
-	targetHumidity FLOAT,
- 	humid_lower_limit FLOAT,
- 	humid_upper_limit FLOAT,
-	samplingPeriodSeconds INT,
- 	serverConnectionPeriodSeconds INT
-        )";
+        $sql = "
+	CREATE TABLE IF NOT EXISTS `config` (
+	  `id` int(11) NOT NULL,
+	  `targetTemperature` float NOT NULL DEFAULT 16,
+	  `temp_max_delta` int(3) NOT NULL,
+	  `temp_upper_limit` float NOT NULL DEFAULT 1,
+	  `temp_lower_limit` float NOT NULL DEFAULT 1,
+	  `targetHumidity` float NOT NULL DEFAULT 65,
+	  `humid_lower_limit` float NOT NULL DEFAULT 2.5,
+	  `humid_upper_limit` float NOT NULL DEFAULT 2.5,
+	  `samplingPeriodSeconds` int(11) NOT NULL DEFAULT 10,
+	  `serverConnectionPeriodSeconds` int(11) NOT NULL DEFAULT 1750,
+	  `actuatorOverride` int(4) NOT NULL DEFAULT 0,
+	  PRIMARY KEY (`id`),
+	  UNIQUE KEY `id` (`id`),
+	  KEY `id_2` (`id`)
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+	INSERT INTO `config` (`id`, `targetTemperature`, `temp_max_delta`, `temp_upper_limit`, `temp_lower_limit`, `targetHumidity`, `humid_lower_limit`, `humid_upper_limit`, `samplingPeriodSeconds`, `serverConnectionPeriodSeconds`, `actuatorOverride`) VALUES
+	(0, 13, 8, 2, 0, 70, 5, 0, 15, 260, 0);
+	";
 
         if ($conn->query($sql) === TRUE) {
             echo "Table config created successfully";
@@ -92,6 +103,7 @@ $confignames = array(
         array("humid_lower_limit", "Lower Humidity Threshold Delta"),
         array("humid_upper_limit", "Upper Humidiy Threshold Delta"),
         array("samplingPeriodSeconds", "Sampling Period	in Seconds"),
-        array("serverConnectionPeriodSeconds", "Server Connection Period in Seconds")
+        array("serverConnectionPeriodSeconds", "Server Connection Period in Seconds"),
+        array("actuatorOverride", "Actuator Overrides"),
 );
 ?>

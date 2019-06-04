@@ -3,16 +3,23 @@ include_once("settings.php");
 
 if(isset($_GET['update']))
 {
+	$didSomething = false;
 	$statement = "UPDATE `config` SET ";
 	foreach($confignames as $name)
 	{
 		if(isset($_POST[$name[0]]))
 		{
+			$didSomething = true;
 			$statement .= '`'.$name[0].'`='.$_POST[$name[0]].', ';
 		}
 	}
 	$statement = substr($statement, 0, -2);
 	$statement .= " WHERE 1;";
+	if(!$didSomething){
+		http_response_code(400);
+		print_r($_POST);
+		die("No valid config given");
+	}
 	if(($result = $conn->query($statement)) === TRUE)
 	{
 		echo "update OK";
@@ -21,6 +28,7 @@ if(isset($_GET['update']))
 	}
 	else
 	{
+		http_response_code(402);
 		echo $statement;
 		die( "update failed!</br>".$result );
 	}

@@ -15,11 +15,46 @@ if(isset($_GET['redraw']))
 <html>
 <head>
 <script type="text/javascript">
-function umschalten(referrer)
+function postOverride(id, value)
 {
-	alert("hah, reingefallen");
+	//alert("old overrides: " + <?php echo $config["actuatorOverride"];?>);
+	//alert(id + " " + value);
+        override = <?php echo $config["actuatorOverride"];?>;
+        override = override & ~(0b11 << id * 2) | (value << id * 2);
+	//alert("new overrides: " + override.toString(2));
+        
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", "/setconf.php?update=yes", true);
+	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	xhr.onreadystatechange = function() {//Call a function when the state changes.
+    	   if(xhr.readyState == 4 && xhr.status == 200) {
+       	      location.reload();
+    	   }
+	}
+	xhr.send("actuatorOverride="+override);
 }
 </script>
+<style>
+.infobar {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: inherit;
+}
+
+.infobar .child {
+    display: inline-block;
+}
+
+#switcher button {
+    padding: 0;
+    margin: 0 1px;
+}
+
+#switcher button:disabled {
+    font-weight: bold;
+}
+
+</style>
 </head>
 <body>
 <h1><?php
@@ -61,30 +96,47 @@ else
 </div>
 <image style="max-width: 100%;" src="./temp.png?<?php echo filemtime('temp.png'); ?>"/>
 <br />
-<div style="display: flex; justify-content: space-evenly; align-items: inherit;">
-	<div style="display: inline-block;">
+<div class="infobar">
+	<div class="child">
 		<img width="200px" src="/image.jpg?<?php echo filemtime('image.jpg');?>"/><br />
 		<form style="display: inline;" method="post" action="/cam.php">
 			<button name="update" value="Ja">Neu Aufnehmen</button>
 		</form>
 	</div>
-	<table style="display: inline-block;">
+	<table class="child" id="switcher">
 		<?php
 		for($el = 0; $el < sizeof($bitpositions); $el++)
 		{
+			$override = ($config["actuatorOverride"] & 0b11 << ($el * 2)) >> ($el * 2);
 			echo "<tr><td>".$bitpositions[$el]."</td><td><span style=\"color: ";
-			if($messpunkt['actuatorStatus'] & 1 << $el)
-			{
+			if($messpunkt['actuatorStatus'] & 1 << $el){
 				echo "green;\">An";
-			}else
-			{
+			}else{
 				echo "red;\">Aus";
 			}
-			echo "</span></td><td><button onclick=\"javascript:umschalten(this);\">umschalten</button></td></tr>";
+			echo "</span></td><td><button ";
+			if($override == 0b11){
+				echo "disabled";
+			}else{
+				echo "onclick='postOverride(".$el.",0b11)'";
+			}
+			echo ">An</button><button ";
+			if($override == 0b00){
+				echo "disabled";
+			}else{
+				echo "onclick='postOverride(".$el.",0b00)'";
+			}
+			echo ">Auto</button><button ";
+			if($override == 0b10){
+				echo "disabled";
+			}else{
+				echo "onclick='postOverride(".$el.",0b10)'";
+			}
+			echo ">Aus</button></td></tr>";
 		}
 		?>
 	</table>
-	<div style="display: inline-block;">
+	<div class="child">
 		<form method="post" action="/setconf.php?update=yes">
 		<table>
 		<?php
@@ -97,7 +149,7 @@ else
 		<input type="submit" value="Submit">
 		</form>
 	</div>
-	<div style="display: inline-block;">
+	<div class="child">
 		<form method="post" action="./debug.php">
 			<button name="update" value="onoff">ONOFF Senden</button><br />
 			<button name="update" value="onoffPlus">ONOFF mit UP Senden</button><br />
