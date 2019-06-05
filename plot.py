@@ -1,5 +1,6 @@
 #!/usr/bin/env python36
-import _mysql
+#import _mysql
+import MySQLdb as sql
 import matplotlib as mpl
 import matplotlib.dates as dates
 from matplotlib.ticker import MaxNLocator
@@ -40,28 +41,22 @@ if(len(sys.argv) == 2):
     days = int(sys.argv[1])
     print(str(days) + " days of history")
 
-db=_mysql.connect("localhost", "warmkram", "warmkram", "warmkram")
+db = sql.connect("localhost", "warmkram", "warmkram", "warmkram")
 db.query("SELECT * FROM templog WHERE timestamp > (UNIX_TIMESTAMP() - 60*60*24*" + str(days) + ") AND temp > 5;")
 r=db.store_result()
 data = r.fetch_row(0)
 
-db.query("""SELECT * FROM config LIMIT 1;""")
-r = db.store_result()
-config = r.fetch_row(0)[0]
-ind = 0
-targetTemperature = float(config[ind])
-ind += 1
-temp_max_delta = targetTemperature + float(config[ind])
-ind += 1
-temp_upper_limit = targetTemperature + float(config[ind])
-ind += 1
-temp_lower_limit = targetTemperature - float(config[ind])
-ind += 1
-targetHumidity = float(config[ind])
-ind += 1
-humid_lower_limit = targetHumidity - float(config[ind])
-ind += 1
-humid_upper_limit = targetHumidity + float(config[ind])
+cursor = db.cursor (sql.cursors.DictCursor)
+cursor.execute ("SELECT * FROM config LIMIT 1;")
+config = cursor.fetchone ()
+
+targetTemperature = float(config["targetTemperature"])
+temp_max_delta = targetTemperature + float(config["temp_max_delta"])
+temp_upper_limit = targetTemperature + float(config["temp_upper_limit"])
+temp_lower_limit = targetTemperature - float(config["temp_lower_limit"])
+targetHumidity = float(config["targetHumidity"])
+humid_lower_limit = targetHumidity - float(config["humid_lower_limit"])
+humid_upper_limit = targetHumidity + float(config["humid_upper_limit"])
 
 timestamp = [datetime.datetime.fromtimestamp(int(time)) for (time, _ , _ , _) in data]
 temp = [float(temp) for (_ ,temp , _ , _) in data]
