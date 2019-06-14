@@ -142,7 +142,7 @@ else
 		<?php
 		foreach($confignames as $name)
 		{
-			echo '<tr><td>'.$name[1].':</td><td><input type="text" name="'.$name[0].'" value="'.$config[$name[0]].'"></td></tr>';
+			echo '<tr><td>'.$name[1].':</td><td><input type="text" style="width: 4em;" name="'.$name[0].'" value="'.$config[$name[0]].'"></td></tr>';
 		}
 		?>
 		</table>
