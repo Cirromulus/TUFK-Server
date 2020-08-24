@@ -1,4 +1,4 @@
-#!/usr/bin/env python36
+#!/usr/bin/env python3
 #import _mysql
 import MySQLdb as sql
 import matplotlib as mpl
@@ -37,9 +37,10 @@ def weighted_mean(x, N):
     return avg
 
 days = 7
-if(len(sys.argv) == 2):
+if(len(sys.argv) >= 2):
     days = int(sys.argv[1])
     print(str(days) + " days of history")
+
 
 db = sql.connect("localhost", "warmkram", "warmkram", "warmkram")
 db.query("SELECT * FROM templog WHERE timestamp > (UNIX_TIMESTAMP() - 60*60*24*" + str(days) + ") AND temp > 5;")
@@ -118,9 +119,12 @@ hours = [x*6 for x in range(1,int(24/4))]
 if(days <= 2):
     hours = [x*3 for x in range(1,int(24/2))]
 
-axT.xaxis.set_minor_locator(dates.HourLocator(byhour=hours))
-axT.xaxis.set_minor_formatter(dates.DateFormatter('%H:%M'))  # hours and minutes
-axT.xaxis.set_major_locator(dates.DayLocator(interval=1))    # every day
+if(days < 31):
+    axT.xaxis.set_minor_locator(dates.HourLocator(byhour=hours))
+if(days < 14):
+    axT.xaxis.set_minor_formatter(dates.DateFormatter('%H:%M'))  # hours and minutes
+
+axT.xaxis.set_major_locator(dates.DayLocator(interval=max(int(math.sqrt(days/18)), 1)))    # every day
 axT.xaxis.set_major_formatter(dates.DateFormatter('\n%d.%m.%Y')) 
 axT.set_xlim(left=timestamp[0])
 axT.set_ylim(bottom=0)
@@ -145,8 +149,11 @@ axH.scatter(motion[0], motion[1], label='Motion', color='b', marker='^')
 axH.scatter(fire[0], fire[1], label='Fire', color='r', marker='*')
 
 fig.legend(ncol=2)
-fig.set_size_inches(15, 6)
-plt.subplots_adjust(left=0.05, right=0.95, top=0.86, bottom=0.1)
+x_size = max(math.sqrt(days*28), 15)
+y_size = 6
+
+fig.set_size_inches(x_size, y_size)
+plt.subplots_adjust(left=0.75/x_size, right=1-(0.75/x_size), top=0.86, bottom=0.1)
 fig.savefig('temp.png', dpi=150)
 
 print("OK")
